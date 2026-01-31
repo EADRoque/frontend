@@ -18,6 +18,9 @@ export class ScriptureTreeComponent {
   categories: string[] = [];
   selectedCategory: string = ''; 
   
+  // State for mobile FAB overlay
+  showMobileForm = false;
+
   newVerse = '';
   newRef = '';
   newCat = '';
@@ -46,11 +49,15 @@ export class ScriptureTreeComponent {
     this.selectedCategory = cat;
   }
 
+  toggleMobileForm() {
+    this.showMobileForm = !this.showMobileForm;
+  }
+
   addScripture() {
     if (!this.newVerse || !this.newRef || !this.newCat) return;
 
     const newEntry: Scripture = {
-      text: this.newVerse, // CHANGED: Key is now 'text'
+      text: this.newVerse,
       reference: this.newRef,
       category: this.newCat
     };
@@ -65,33 +72,27 @@ export class ScriptureTreeComponent {
       this.newVerse = '';
       this.newRef = '';
       this.newCat = '';
+      
+      // Close the mobile form if it was open
+      this.showMobileForm = false;
     });
   }
 
   removeScripture(id: number | undefined) {
     if (!id) return;
-
     if (confirm('Are you sure you want to remove this verse from your garden?')) {
       this.api.deleteScripture(id).subscribe(() => {
-        // Remove it from the local list so the UI updates instantly
         this.allScriptures = this.allScriptures.filter(s => s.id !== id);
       });
     }
   }
 
   removeCategory(catName: string, event: Event) {
-    // Prevent the click from also triggering 'selectCategory'
     event.stopPropagation();
-
     if (confirm(`Are you sure you want to delete the entire '${catName}' branch?`)) {
       this.api.deleteCategory(catName).subscribe(() => {
-        // Remove all local scriptures belonging to that category
         this.allScriptures = this.allScriptures.filter(s => s.category !== catName);
-        
-        // Update categories list
         this.categories = this.categories.filter(c => c !== catName);
-        
-        // Reset view to the first available category or empty
         this.selectedCategory = this.categories[0] || '';
       });
     }

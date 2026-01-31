@@ -1,7 +1,6 @@
 <div class="flex flex-col md:flex-row h-screen bg-stone-50 overflow-hidden font-sans">
 
   <aside class="hidden md:flex md:w-80 bg-white border-r border-stone-200 flex-col shadow-lg z-10">
-    
     <div class="p-6 border-b border-stone-100 bg-emerald-50/50">
       <h2 class="text-2xl font-serif text-emerald-800 flex items-center gap-2">
         <span>🌿</span> Scripture Tree
@@ -61,7 +60,6 @@
   </header>
 
   <main class="flex-1 overflow-y-auto p-6 md:p-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
-    
     <div class="max-w-4xl mx-auto">
       <div class="flex justify-between items-end mb-8">
         <div>
@@ -73,11 +71,9 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <div *ngFor="let verse of getVerses(selectedCategory)" class="bg-white p-6 md:p-8 rounded-tr-3xl rounded-bl-3xl shadow-sm border border-stone-100 hover:shadow-md transition-all group relative">
-          
           <blockquote class="text-base md:text-lg text-stone-700 font-serif leading-relaxed mb-4 relative z-10">
             “{{ verse.text }}”
           </blockquote>
-
           <div class="flex justify-between items-center">
             <button (click)="removeScripture(verse.id)" class="opacity-100 md:opacity-0 md:group-hover:opacity-100 text-stone-300 hover:text-red-400 transition-all p-1">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -89,6 +85,48 @@
         </div>
       </div>
       
+      <div *ngIf="categories.length === 0" class="text-center mt-20 opacity-50">
+        <div class="text-6xl mb-4">🌱</div>
+        <p class="text-xl font-serif">The garden is empty.</p>
+        <p>Use the FAB below to plant your first verse.</p>
       </div>
+    </div>
   </main>
+
+  <button 
+    (click)="toggleMobileForm()" 
+    class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-emerald-600 text-white rounded-full shadow-2xl flex items-center justify-center z-50 transition-transform active:scale-95">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+  </button>
+
+  <div 
+    *ngIf="showMobileForm" 
+    class="md:hidden fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[60] flex items-center justify-center p-6"
+    (click)="toggleMobileForm()">
+    
+    <div 
+      class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl space-y-4"
+      (click)="$event.stopPropagation()">
+      
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="text-lg font-serif text-emerald-800">Plant New Verse</h3>
+        <button (click)="toggleMobileForm()" class="text-stone-400 p-1">✕</button>
+      </div>
+      
+      <div class="space-y-3">
+        <input [(ngModel)]="newCat" placeholder="Category (e.g. Hope)" class="w-full p-3 rounded-xl border border-stone-200 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500">
+        <input [(ngModel)]="newRef" placeholder="Reference (e.g. John 3:16)" class="w-full p-3 rounded-xl border border-stone-200 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500">
+        <textarea [(ngModel)]="newVerse" rows="3" placeholder="Verse text..." class="w-full p-3 rounded-xl border border-stone-200 outline-none resize-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"></textarea>
+      </div>
+      
+      <button 
+        (click)="addScripture()" 
+        class="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-emerald-200 transition-colors hover:bg-emerald-700">
+        Grow Branch
+      </button>
+    </div>
+  </div>
+
 </div>
