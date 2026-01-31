@@ -44,4 +44,8 @@ export class ApiService {
   resetDatabase(): Observable<any> {
     return this.http.delete(`${this.apiUrl}/reset/`);
   }
+
+  deleteScripture(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/scriptures/${id}`);
+  }
 }

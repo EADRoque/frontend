@@ -67,4 +67,15 @@ export class ScriptureTreeComponent {
       this.newCat = '';
     });
   }
+
+  removeScripture(id: number | undefined) {
+    if (!id) return;
+
+    if (confirm('Are you sure you want to remove this verse from your garden?')) {
+      this.api.deleteScripture(id).subscribe(() => {
+        // Remove it from the local list so the UI updates instantly
+        this.allScriptures = this.allScriptures.filter(s => s.id !== id);
+      });
+    }
+  }
 }
