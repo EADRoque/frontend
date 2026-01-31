@@ -48,4 +48,8 @@ export class ApiService {
   deleteScripture(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/scriptures/${id}`);
   }
+
+  deleteCategory(categoryName: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/scriptures/category/${categoryName}`);
+  }
 }

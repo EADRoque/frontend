@@ -78,4 +78,22 @@ export class ScriptureTreeComponent {
       });
     }
   }
+
+  removeCategory(catName: string, event: Event) {
+    // Prevent the click from also triggering 'selectCategory'
+    event.stopPropagation();
+
+    if (confirm(`Are you sure you want to delete the entire '${catName}' branch?`)) {
+      this.api.deleteCategory(catName).subscribe(() => {
+        // Remove all local scriptures belonging to that category
+        this.allScriptures = this.allScriptures.filter(s => s.category !== catName);
+        
+        // Update categories list
+        this.categories = this.categories.filter(c => c !== catName);
+        
+        // Reset view to the first available category or empty
+        this.selectedCategory = this.categories[0] || '';
+      });
+    }
+  }
 }
