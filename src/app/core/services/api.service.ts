@@ -23,7 +23,9 @@ export class ApiService {
   private http = inject(HttpClient);
   
   // This points to your running FastAPI backend
-  private apiUrl = 'http://127.0.0.1:8000';
+  private apiUrl = window.location.hostname.includes('localhost')
+  ? 'http://127.0.0.1:8000'
+  : 'https://token-api-70mt.onrender.com';
 
   // --- Gratitude Jar ---
   getGratitudeLogs(): Observable<Gratitude[]> {
