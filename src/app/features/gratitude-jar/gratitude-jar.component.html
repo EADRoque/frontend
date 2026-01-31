@@ -1,0 +1,73 @@
+<div class="min-h-screen bg-slate-50 p-8 font-sans text-slate-700 flex flex-col">
+  
+  <header class="mb-12 text-center">
+    
+    <div class="relative inline-block group mb-4">
+      <svg class="w-24 h-24 text-amber-300 drop-shadow-sm group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M18 4h-1V2a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v2H6a2 2 0 0 0-2 2v2h16V6a2 2 0 0 0-2-2zm-1 4H7v12a3 3 0 0 0 3 3h4a3 3 0 0 0 3-3V8zM8 4h8v2H8V4z" opacity="0.4"/>
+        <path d="M16.5 8h-9A2.5 2.5 0 0 0 5 10.5V20a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4V10.5A2.5 2.5 0 0 0 16.5 8zM7 10.5A.5.5 0 0 1 7.5 10h9a.5.5 0 0 1 .5.5V20a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V10.5z" fill="currentColor"/>
+      </svg>
+      
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-2">
+        <span class="text-xl font-bold text-amber-700 font-mono">{{ gratitudeLogs.length }}</span>
+      </div>
+    </div>
+
+    <h1 class="text-4xl font-bold text-amber-600 mb-2 tracking-tight">Gratitude Jar</h1>
+    <p class="text-slate-500 italic">"Collecting small joys, one day at a time."</p>
+    
+    <div class="mt-4">
+      <a routerLink="/scriptures" class="inline-flex items-center gap-1 text-sm font-semibold text-emerald-600 hover:text-emerald-700 hover:underline cursor-pointer transition-colors bg-emerald-50 px-4 py-2 rounded-full">
+        <span>Go to Scripture Tree</span>
+        <span>&rarr;</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="max-w-xl mx-auto mb-16 w-full">
+    <div class="relative group bg-white p-2 rounded-2xl shadow-sm border border-slate-200 focus-within:border-amber-400 focus-within:ring-4 focus-within:ring-amber-50 transition-all">
+      <textarea 
+        [(ngModel)]="newLogContent" 
+        placeholder="What are you grateful for today?" 
+        class="w-full p-4 text-lg bg-transparent border-none focus:ring-0 resize-none outline-none text-slate-700 placeholder:text-slate-400 h-32"
+      ></textarea>
+      
+      <div class="flex justify-between items-center px-4 pb-2">
+        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Today's Note</span>
+        <button (click)="addLog()" class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-xl font-medium transition-colors shadow-sm active:scale-95">
+          Drop in Jar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-1 columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 max-w-7xl mx-auto w-full mb-12">
+    <div *ngFor="let log of gratitudeLogs" class="break-inside-avoid">
+      <div class="bg-white p-6 rounded-xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 border-l-4 border-amber-300 relative">
+        
+        <p class="text-lg leading-relaxed text-slate-800 mb-4">
+          {{ log.content }}
+        </p>
+        
+        <div class="flex justify-between items-center border-t border-slate-100 pt-3">
+          <span class="text-xs font-mono text-slate-400">
+            {{ log.created_at | date:'mediumDate' }}
+          </span>
+          <span class="px-2 py-1 bg-amber-50 text-amber-700 text-[10px] font-bold uppercase tracking-wider rounded-md">
+            {{ log.mood }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="mt-auto border-t border-slate-200 pt-8 pb-4 text-center">
+    <p class="text-xs text-slate-400 mb-3">
+      Personal Project • Token for Nia Castillo
+    </p>
+    <button (click)="resetApp()" class="text-xs font-bold text-slate-300 hover:text-red-500 transition-colors uppercase tracking-widest px-4 py-2 hover:bg-red-50 rounded">
+      Reset Application Data
+    </button>
+  </footer>
+
+</div>
