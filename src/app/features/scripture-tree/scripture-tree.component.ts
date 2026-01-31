@@ -16,9 +16,8 @@ export class ScriptureTreeComponent {
 
   allScriptures: Scripture[] = [];
   categories: string[] = [];
-  selectedCategory: string = 'All'; // Default view
+  selectedCategory: string = ''; 
   
-  // Form inputs
   newVerse = '';
   newRef = '';
   newCat = '';
@@ -30,18 +29,15 @@ export class ScriptureTreeComponent {
   loadScriptures() {
     this.api.getScriptures().subscribe(data => {
       this.allScriptures = data;
-      // Get unique categories and sort them
       const uniqueCats = [...new Set(data.map(s => s.category))];
       this.categories = uniqueCats.sort();
       
-      // Default to the first category if we have data and nothing is selected
-      if (this.categories.length > 0 && this.selectedCategory === 'All') {
+      if (this.categories.length > 0 && !this.selectedCategory) {
         this.selectedCategory = this.categories[0];
       }
     });
   }
 
-  // Filter verses for the UI
   getVerses(category: string) {
     return this.allScriptures.filter(s => s.category === category);
   }
@@ -54,24 +50,18 @@ export class ScriptureTreeComponent {
     if (!this.newVerse || !this.newRef || !this.newCat) return;
 
     const newEntry: Scripture = {
-      verse_text: this.newVerse,
+      text: this.newVerse, // CHANGED: Key is now 'text'
       reference: this.newRef,
       category: this.newCat
     };
 
     this.api.addScripture(newEntry).subscribe(saved => {
       this.allScriptures.push(saved);
-      
-      // If this is a new category, add it to our list
       if (!this.categories.includes(saved.category)) {
         this.categories.push(saved.category);
         this.categories.sort();
       }
-      
-      // Switch view to the new entry
       this.selectedCategory = saved.category;
-      
-      // Reset form
       this.newVerse = '';
       this.newRef = '';
       this.newCat = '';
